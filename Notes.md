@@ -144,3 +144,13 @@ it("should object", () => {
 # Matchers
 
 There are many matchers that can be easily found in the [docs](https://vitest.dev/api/expect.html) and I should not try to memorize right now but one important thing to remember is the difference betwen toBe and toEqual when it comes to javascript objects. In javascript { name: "Ian" } is not the same as { name: "Ian" } because they are two different objects in memory. In these cases we want to test the value of both objects, not the equality of the objects themselves so in vitest we can use toEqual instead of toBe.
+
+We can match types with typescript enabled. [expectTypeof](https://vitest.dev/api/expect-typeof)
+Not currently using typescript in this project but most def will in my own projects
+
+toBeGreaterThan, toBeLessThan not chainable and there is no toBeInBetween. So silly...
+
+# More Notes
+
+Notice in core.test.js, the getCoupons test suite
+Each test has a single logical responsibility even though there are multiple assertions. Some might argue that a test should have a single assertion. Some might be silly too. Multiple assertions are a flag, telling you to pay extra attention and see if you are grouping responsibilities but if not, then this is fine. The first tests responsibility is to ensure that the function returns an array of coupons so there must be at least one coupon and it must be a coupon which means it must be an object. Subsequent tests test the actual coupon object properties

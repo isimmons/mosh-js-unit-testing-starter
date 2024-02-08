@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
+    "@vitest/ui": "^1.2.2",
     "vite": "^5.0.0",
     "vitest": "^1.2.2"
   },

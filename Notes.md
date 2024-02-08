@@ -86,3 +86,7 @@ A test that is resilient to changes in the code.
 - deterministic (produce same results every time)
 - purity (no random data, current date/time, global state)
 - tests should be isolated from each other and from knowlege of implimentation in the production code
+
+# Matchers
+
+There are many matchers that can be easily found in the [docs](https://vitest.dev/api/expect.html) and I should not try to memorize right now but one important thing to remember is the difference betwen toBe and toEqual when it comes to javascript objects. In javascript { name: "Ian" } is not the same as { name: "Ian" } because they are two different objects in memory. In these cases we want to test the value of both objects, not the equality of the objects themselves so in vitest we can use toEqual instead of toBe.

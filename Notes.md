@@ -51,3 +51,10 @@ ctrl+p opens 'go to file' ( type name or abbreviation, arrow down and/or enter)
 ctrl+p type @ shows symbols in current file
 ctrl+p type : shows line numbers, type number and enter to go to line in current file
 look at "go" menu to see shortcuts for back and forward cursor pos in current file
+
+# code coverage
+
+100% code coverage thought to be unrealistic because you can't spend all your time writing tests
+and not deliver code. But do you want to deliver broken code? Code coverage is not a garanteed
+bug free code. But isn't code coverage closer to being garanteed than no coverage? Lot's to think
+about. A lot of OSS projects require tests along with PRs and the tests must pass along with existing tests in the project before a PR can be approved. I guess this is one way to make it easier by having individual contributors be responsible for coverage on the parts of code they submit in PRs. But a dev team might need to have certain people assigned to test and approve new features before shipping them so at least a large part of the team could focus on writing code? IDK

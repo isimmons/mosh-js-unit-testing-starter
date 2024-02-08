@@ -58,3 +58,31 @@ look at "go" menu to see shortcuts for back and forward cursor pos in current fi
 and not deliver code. But do you want to deliver broken code? Code coverage is not a garanteed
 bug free code. But isn't code coverage closer to being garanteed than no coverage? Lot's to think
 about. A lot of OSS projects require tests along with PRs and the tests must pass along with existing tests in the project before a PR can be approved. I guess this is one way to make it easier by having individual contributors be responsible for coverage on the parts of code they submit in PRs. But a dev team might need to have certain people assigned to test and approve new features before shipping them so at least a large part of the team could focus on writing code? IDK
+
+# Good test Characteristics
+
+## Maintainable
+
+- clear naming
+- small (ideally less than 10 lines suggested by Mosh)
+- test a single behavior
+- clear variables and constants
+- properly formatted (thanks prettier)
+
+## Robust 🐖
+
+A test that is resilient to changes in the code.
+
+- test behavior and not the implimentation (the what, not the how)
+- avoid tight assertions (exact text and error messages)
+
+## Trustworthy 🤝🔒👥
+
+- code works
+- when fails, something is wrong with the code, not the test
+- no false positives or false negatives
+- validates correct behavior
+- test boundary conditions (empty arrays, null, undefined, extreme values)
+- deterministic (produce same results every time)
+- purity (no random data, current date/time, global state)
+- tests should be isolated from each other and from knowlege of implimentation in the production code

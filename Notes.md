@@ -33,3 +33,10 @@ Too many unit tests can become rediculous.
 I would agreen that in many cases the suggested testing pyramid is the right way to go. What this means is more unit tests than integration and more integration than E2E but as Mosh points out, the specific type of app may work better with a different ratio so there is no "one size fits all"
 
 TDD is something that I don't think many people actually follow strictly but it can help in reasoning about the code, wishful coding (write the test for the API you want so the test requires the unit to be written that way), and writing new functions as part of a refactor or extraction so you know it works before you use it to replace existing code.
+
+# Testing basics
+
+The AAA pattern stands for Arrange, Act, Assert and is a good basic template for writing tests.
+Arrange (setup env, data, configs needed for the test)
+Act (perform the action of running the function or unit being tested)
+Assert (assert that we get the correct result from the action)

@@ -87,6 +87,60 @@ A test that is resilient to changes in the code.
 - purity (no random data, current date/time, global state)
 - tests should be isolated from each other and from knowlege of implimentation in the production code
 
+# Tight assertion
+
+A tight assertion can be a problem in the following example
+
+## tight string assertion
+
+```js
+it("should", () => {
+  const result = "The requested file was not found.";
+  // too general
+  expect(result).toBeDefined();
+  // too tight
+  expect(result).toBe("The requested file was not found.");
+  // better
+  expect(result).toMatch("not found");
+  // case insensitive regex may be even better
+  expect(result).toMatch(/not found/i);
+});
+```
+
+If the period changes to an ! the test fails. But one could argue that copy text might not need to be open to the idividual devs on a team to make changes on a whim. Maybe for certain teams, very strict adherence to specific text is required. This brings up another issue on the production side though. If you want central control over the text of error messages, there should be defined constants like `const FILE_NOT_FOUND = "The requested file was not found."` These constants can be shared between the production and testing environments.
+
+## tight array/object assertion
+
+```js
+it("should array", () => {
+  const res = [1, 2, 3];
+  // Loose
+  expect(res).toBeDefined();
+  // Tight
+  expect(res).toEqual([1, 2, 3]);
+  // better, not dependant on order of the elements
+  expect(res).toEqual(expect.arrayContaining([3, 2, 1])); // passes
+  // some cases require specific length
+  expect(res).toHaveLength(3);
+  // or non empty array
+  expect(res.length).toBeGreaterThan(0);
+});
+
+it("should object", () => {
+  const res = { name: "Ian" };
+
+  // tight
+  expect(res).toEqual({ name: "Ian" });
+  // looser, matches subset, will pass if we add id property to the object
+  expect(res).toMatchObject({ name: "Ian" });
+  // looser still, check presense of property only, no value check
+  // also takes second arg for value of property
+  expect(res).toHaveProperty("name");
+  // check typeof
+  expect(typeof res.name)toBe('string');
+});
+```
+
 # Matchers
 
 There are many matchers that can be easily found in the [docs](https://vitest.dev/api/expect.html) and I should not try to memorize right now but one important thing to remember is the difference betwen toBe and toEqual when it comes to javascript objects. In javascript { name: "Ian" } is not the same as { name: "Ian" } because they are two different objects in memory. In these cases we want to test the value of both objects, not the equality of the objects themselves so in vitest we can use toEqual instead of toBe.

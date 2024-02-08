@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 
-import { max, fizzBuzz, calculateAverage } from "../src/intro";
+import { max, fizzBuzz, calculateAverage, factorial } from "../src/intro";
 
 // you can nest describes for nice output when testing sub-suites of a suite of tests
 // or you can put multiple describes in one file for all separate suites
@@ -72,5 +72,27 @@ describe("calculateAverage", () => {
 
   it("should return the average of an array with three numbers", () => {
     expect(calculateAverage([1, 2, 3])).toBe(2);
+  });
+});
+
+describe("factorial", () => {
+  it("should return 1 for 0!", () => {
+    expect(factorial(0)).toBe(1);
+  });
+
+  it("should return 1 for 1!", () => {
+    expect(factorial(1)).toBe(1);
+  });
+
+  it("should return 2 for 2!", () => {
+    expect(factorial(2)).toBe(2);
+  });
+
+  it("should return 6 for 3!", () => {
+    expect(factorial(3)).toBe(6);
+  });
+
+  it("should return undefined for -n!", () => {
+    expect(factorial(-1)).toBeUndefined();
   });
 });

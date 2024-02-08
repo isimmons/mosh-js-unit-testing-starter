@@ -44,3 +44,10 @@ The AAA pattern stands for Arrange, Act, Assert and is a good basic template for
 Arrange (setup env, data, configs needed for the test)
 Act (perform the action of running the function or unit being tested)
 Assert (assert that we get the correct result from the action)
+
+# VSCode shortcuts
+
+ctrl+p opens 'go to file' ( type name or abbreviation, arrow down and/or enter)
+ctrl+p type @ shows symbols in current file
+ctrl+p type : shows line numbers, type number and enter to go to line in current file
+look at "go" menu to see shortcuts for back and forward cursor pos in current file

@@ -34,6 +34,10 @@ I would agreen that in many cases the suggested testing pyramid is the right way
 
 TDD is something that I don't think many people actually follow strictly but it can help in reasoning about the code, wishful coding (write the test for the API you want so the test requires the unit to be written that way), and writing new functions as part of a refactor or extraction so you know it works before you use it to replace existing code.
 
+TDD helps prevent overenginneering if we do it right. If we write the first test and then write
+only the simplest logic to make the test pass and then only add to the code after first writing
+a new test then we won't write unnessessary or overengineered code.
+
 # Testing basics
 
 The AAA pattern stands for Arrange, Act, Assert and is a good basic template for writing tests.

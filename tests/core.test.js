@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   calculateDiscount,
+  canDrive,
   getCoupons,
   isPriceInRange,
   isValidUsername,
@@ -151,5 +152,33 @@ describe("isValidUsername", () => {
     expect(isValidUsername(2)).toBe(false);
     expect(isValidUsername([])).toBe(false);
     expect(isValidUsername({})).toBe(false);
+  });
+});
+
+describe("canDrive", () => {
+  // don't like replicating but in real world app this would be an imported constant
+  // imported both in the test and the production code
+  const legalDrivingAge = {
+    US: 16,
+    UK: 17,
+  };
+
+  it("should return an error, given an invalid country code", () => {
+    expect(canDrive(16, "RU")).toMatch(/invalid/i);
+  });
+
+  it("should return true, given valid age and country code", () => {
+    expect(canDrive(legalDrivingAge.US, "US")).toBe(true);
+    expect(canDrive(legalDrivingAge.UK, "UK")).toBe(true);
+  });
+
+  it("should return true if age greater than minimum", () => {
+    expect(canDrive(legalDrivingAge.US + 1, "US")).toBe(true);
+    expect(canDrive(legalDrivingAge.UK + 1, "UK")).toBe(true);
+  });
+
+  it("should return false if age less than minimum", () => {
+    expect(canDrive(legalDrivingAge.US - 1, "US")).toBe(false);
+    expect(canDrive(legalDrivingAge.UK - 1, "UK")).toBe(false);
   });
 });

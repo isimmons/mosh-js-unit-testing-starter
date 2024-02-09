@@ -187,4 +187,4 @@ Type checking every input possibility is part of defensive programming. Some wou
 
 # Parameterized Tests
 
-Also called data driven tests are a way to run the same test multiple times with different sets of input data. Several tests may have the same logic but just use different data. See the parameterized version of canDrive
+Also called data driven tests are a way to run the same test multiple times with different sets of input data. Several tests may have the same logic but just use different data. See the parameterized version of canDrive and isPriceInRange

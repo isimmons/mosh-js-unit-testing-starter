@@ -176,3 +176,7 @@ A lot of this will be unnessessary when using typescript because the TS compiler
 
 A problem arose with the code first approach when testing calculateDiscount.
 For the last test, when it failed, I thought in a TDD mindset plus testing for valid codes from a list of valid codes actually makes more sense. But the problem was actually that the test was testing the wrong thing because the function was written to return the input price if the code is invalid. While this is the correct price (no discount price) we aren't really handling it in the same way as the other negative tests by returning an error message. So I wrote the test wrong, then changed the code in the function, then realized the function was right, changed it back and then changed my test to work for the function. I had no documentation and no way of knowing that the function was actually doing what it was supposed to do because I was writing a test for an already existing function with nothing to go on but the existing code and my assumptions of how it was supposed to work.
+
+# Boundary Testing
+
+Boundary testing focuses on the edges or boundaries of input values to ensure software behaves correctly under extreme conditions. For example isPriceInRange returns a boolean if the price is betwen or equal to a min and max. We need 3 tests. 1 is it inside the boundary, 2 is it outside the boundary, 3 is it at the edge of the boundary (2 part 2nd and 3rd tests because we have a min/max)

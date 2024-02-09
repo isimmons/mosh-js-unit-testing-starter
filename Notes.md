@@ -38,6 +38,10 @@ TDD helps prevent overenginneering if we do it right. If we write the first test
 only the simplest logic to make the test pass and then only add to the code after first writing
 a new test then we won't write unnessessary or overengineered code.
 
+It just occurred to me that writing the test after the code, I have to do things like changing the code to make sure my test is testing the correct behavior and not getting a false positive/negative. With strict TDD the test doesn't pass until I write the minimal code to pass so it has to be the correct behavior. In other words, write code, test, remove code, test, add code back to ensure my test wasn't passing for the wrong reason vs TDD way, write test, fail, add code, test pass. Strict TDD cuts out all the jumping back and forth between test file and production file. When the test turns green and I'm happy with the code structure, I can feel confident in jumping once back to the test file to move on with the next test.
+
+This is made evident again in the validateUserInput function as Mosh points out that our function is not checking for log usernames. I don't think this is something where we should pick and choose when we are going to use proper TDD. Either don't or do it always if you have the chance by starting at the beginning of the project. Otherwize just know you'll always need to think through the logic with plans on changing the implimentation. Either way you need to focus and follow a standard.
+
 # Testing basics
 
 The AAA pattern stands for Arrange, Act, Assert and is a good basic template for writing tests.
@@ -58,6 +62,8 @@ look at "go" menu to see shortcuts for back and forward cursor pos in current fi
 and not deliver code. But do you want to deliver broken code? Code coverage is not a garanteed
 bug free code. But isn't code coverage closer to being garanteed than no coverage? Lot's to think
 about. A lot of OSS projects require tests along with PRs and the tests must pass along with existing tests in the project before a PR can be approved. I guess this is one way to make it easier by having individual contributors be responsible for coverage on the parts of code they submit in PRs. But a dev team might need to have certain people assigned to test and approve new features before shipping them so at least a large part of the team could focus on writing code? IDK
+
+Demonstrated the importance of a coverage tool in the calculateDiscount test. Originally the test for a valid code was passing but only covered the case for 'SAVE10' so when I ran coverage I could see in the function that everything but the condition for 'SAVE20' was covered. Normally I would not be listing if conditionals for every possible valid code but instead would be itterating a list of valid codes and a typescript union might render some of this unnessessary too. But for demo purpose, this was a good simple one.
 
 # Good test Characteristics
 
@@ -152,5 +158,21 @@ toBeGreaterThan, toBeLessThan not chainable and there is no toBeInBetween. So si
 
 # More Notes
 
+## single responsibility tests
+
 Notice in core.test.js, the getCoupons test suite
 Each test has a single logical responsibility even though there are multiple assertions. Some might argue that a test should have a single assertion. Some might be silly too. Multiple assertions are a flag, telling you to pay extra attention and see if you are grouping responsibilities but if not, then this is fine. The first tests responsibility is to ensure that the function returns an array of coupons so there must be at least one coupon and it must be a coupon which means it must be an object. Subsequent tests test the actual coupon object properties
+
+## positive vs negative testing
+
+Positive testing ensures the application works correctly under normal conditions (the happy path)
+Negative testing tests how the application handles unexpected or incorrect input (the sad path)
+
+Test the happy path first. Then it will be followed most likely, by multiple sad paths but it will be easier to see that you have tested all of the negatives if you can clearly see the positive at the top of the test suite.
+
+A lot of this will be unnessessary when using typescript because the TS compiler will not allow many of the potential negative paths. This is no garantee because 1 is a number and so is 10 but our happy path may be a number less than 5 so typescript would not help us there. But, non numeric values would not need to be tested for if we have typed our function param as number.
+
+# calculateDiscount code first problem
+
+A problem arose with the code first approach when testing calculateDiscount.
+For the last test, when it failed, I thought in a TDD mindset plus testing for valid codes from a list of valid codes actually makes more sense. But the problem was actually that the test was testing the wrong thing because the function was written to return the input price if the code is invalid. While this is the correct price (no discount price) we aren't really handling it in the same way as the other negative tests by returning an error message. So I wrote the test wrong, then changed the code in the function, then realized the function was right, changed it back and then changed my test to work for the function. I had no documentation and no way of knowing that the function was actually doing what it was supposed to do because I was writing a test for an already existing function with nothing to go on but the existing code and my assumptions of how it was supposed to work.

@@ -180,3 +180,7 @@ For the last test, when it failed, I thought in a TDD mindset plus testing for v
 # Boundary Testing
 
 Boundary testing focuses on the edges or boundaries of input values to ensure software behaves correctly under extreme conditions. For example isPriceInRange returns a boolean if the price is betwen or equal to a min and max. We need 3 tests. 1 is it inside the boundary, 2 is it outside the boundary, 3 is it at the edge of the boundary (2 part 2nd and 3rd tests because we have a min/max)
+
+## Defensive Programming
+
+Type checking every input possibility is part of defensive programming. Some would argue the boundary for the input is where this defensive programming should take place. For example, when the user inputs a piece of data instead of in a function where we pass that data too. In other words by the time the data gets to function B from function A, it should already have been checked in function A before A passed it on to function B. I'm not sure I agree with this. If I'm testing function B I should not be thinking about function A so I should not assume that function A did it's job correctly unless I have a unit test for function A that confirms it. Typescript will take care of this if the data is correctly typed before being sent to function B. Also if the parameter is correctly typed in function B and not in function A it will either be correctly inferred or it will be of type implicit any in which case I will need to do the runtime type check to satisfy Typescript.

@@ -188,3 +188,7 @@ Type checking every input possibility is part of defensive programming. Some wou
 # Parameterized Tests
 
 Also called data driven tests are a way to run the same test multiple times with different sets of input data. Several tests may have the same logic but just use different data. See the parameterized version of canDrive and isPriceInRange
+
+# Asyncronous Testing
+
+To test asyncronous code is not very different from running asyncronous code in production. As you can see in the fetchData test I have left both an async/await version and a then/catch version. In the production code is a simple promise rejection just for demonstrating the catch tests. In reality some condition would cause a failure, triggering a rejection or thrown error but the test passes and covers both success and fail scenarios.

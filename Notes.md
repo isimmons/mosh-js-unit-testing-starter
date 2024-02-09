@@ -192,3 +192,38 @@ Also called data driven tests are a way to run the same test multiple times with
 # Asyncronous Testing
 
 To test asyncronous code is not very different from running asyncronous code in production. As you can see in the fetchData test I have left both an async/await version and a then/catch version. In the production code is a simple promise rejection just for demonstrating the catch tests. In reality some condition would cause a failure, triggering a rejection or thrown error but the test passes and covers both success and fail scenarios.
+
+# Basic setup and teardown
+
+beforeEach (before each test)
+beforeAll (run once before running tests in the test suite)
+afterEach (after each test)
+afterAll (after all tests have run in the test suite)
+We may need to setup certain data, mocks, db connections for tests and then clean them up after tests have run. This is what setup and teardown is about.
+
+In the stack test I create a new instance of Stack before each test and use a context parameter in the callback of beforeEach which is passed to each test. The same context is used in afterEach where I delete the stack instance. This ensures I have a clean starting point for each test.
+
+I could also have used a `let stack;` scoped to the whole test suite and set/delete it in the beforeEach/afterEach hooks. In hindsight, this would have been easier that having to type context.stack all those times.
+
+```js
+let stack;
+
+beforeEach(() => {
+  stack = new Stack();
+});
+
+afterEach(() => {
+  delete stack;
+});
+
+it("should be an instance of Stack", () => {
+  console.log(stack);
+  expect(stack instanceof Stack).toBe(true);
+});
+```
+
+Then in each test I use the built in array methods to do the work and test only the stack method under test. If I were to use stack.push and stack.clear directly in the test for stack.size or stack.isEmpty then this would couple my tests together. They would have to run in order to ensure the needed methods were available and working correctly. In the course Mosh uses untested stack methods in the setup for other methods. In some cases this may be nessessary and in a way provides extra testing on those methods but in the case of our stack, items is an array so built in array methods can be used. In other cases the way Mosh does it could potentially cause confusion on where the error actually is if there is an error. This is because vitest won't give me an error like "stack.foo is not a function" or other errors that might be thrown by stack.foo when I'm using stack.foo in the setup for testing stack.bar. vitest will just tell me stack.bar expected foo but recieved undefined or whatever.
+
+Some people would say this is not the purpose of beforeEach/afterEach and each test should handle it's own setup as far as vars used in the test. I don't see an issue with this though. At least not at this point. Opinions change with education though. I have more to learn.
+
+Also used nested describe blocks for cleaner console output

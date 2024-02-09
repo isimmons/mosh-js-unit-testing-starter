@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
+  Stack,
   calculateDiscount,
   canDrive,
   fetchData,
@@ -253,5 +254,87 @@ describe("fetchData", () => {
       expect(error).toHaveProperty("reason");
       expect(error.reason).toMatch(/fail/i);
     }
+  });
+});
+
+describe("stack", () => {
+  beforeEach((context) => {
+    context.stack = new Stack();
+  });
+
+  afterEach((context) => {
+    delete context.stack;
+  });
+
+  it("should be an instance of Stack", (context) => {
+    expect(context.stack instanceof Stack).toBe(true);
+  });
+
+  it("should have an items array", (context) => {
+    expect(Array.isArray(context.stack.items)).toBe(true);
+  });
+
+  describe("stack methods", () => {
+    describe("push", () => {
+      it("should add an item to the stack", (context) => {
+        context.stack.push("foo");
+        expect(context.stack.items.length).toBe(1);
+      });
+    });
+
+    describe("pop", () => {
+      it("should remove and return the top item", (context) => {
+        context.stack.items.push("foo");
+        context.stack.items.push("bar");
+        const item = context.stack.pop();
+        expect(item).toBe("bar");
+        expect(context.stack.items.length).toBe(1);
+      });
+
+      it("should throw an error if items is empty", (context) => {
+        expect(() => context.stack.pop()).toThrow(/empty/i);
+      });
+    });
+
+    describe("peek", () => {
+      it("should return the top item without removing it", (context) => {
+        context.stack.items.push("foo");
+        context.stack.items.push("bar");
+        const item = context.stack.peek();
+        expect(item).toBe("bar");
+        expect(context.stack.items[1]).toBe("bar");
+      });
+
+      it("should throw an error if items is empty", (context) => {
+        expect(() => context.stack.peek()).toThrow(/empty/i);
+      });
+    });
+
+    describe("clear", () => {
+      it("should clear the stack", (context) => {
+        context.stack.items.push("foo");
+        context.stack.clear();
+        expect(context.stack.items.length).toBe(0);
+      });
+    });
+
+    describe("isEmpty", () => {
+      it("should return true if stack is empty", (context) => {
+        expect(context.stack.isEmpty()).toBe(true);
+      });
+
+      it("should return false if stack is not empty", (context) => {
+        context.stack.items.push("foo");
+        expect(context.stack.isEmpty()).toBe(false);
+      });
+    });
+
+    describe("size", () => {
+      it("should return the number of items in the stack", (context) => {
+        context.stack.items.push("foo");
+        context.stack.items.push("bar");
+        expect(context.stack.size()).toBe(2);
+      });
+    });
   });
 });

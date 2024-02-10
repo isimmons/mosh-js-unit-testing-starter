@@ -1,12 +1,14 @@
 import { it, expect, describe, vi } from "vitest";
-import { getPriceInCurrency } from "../src/mocking";
+import { getPriceInCurrency, getShippingInfo } from "../src/mocking";
 import { getExchangeRate } from "../src/libs/currency";
+import { getShippingQuote } from "../src/libs/shipping";
 
 // this will mock all exported functions from the currency module
 // this line is hoisted so it replaces the functions with the mocked
 // version first. So, when getExchangeRate is imported above
 // it is actually the mocked version being imported
 vi.mock("../src/libs/currency");
+vi.mock("../src/libs/shipping");
 
 describe("greet", () => {
   it("should mock the greet function", async () => {
@@ -46,5 +48,26 @@ describe("getPriceInCurrency", () => {
     const price = getPriceInCurrency(10, "AUD");
 
     expect(price).toBe(15);
+  });
+});
+
+describe("getShippingInfo", () => {
+  it("should return shipping unavailable if quote cannot be fetched", () => {
+    vi.mocked(getShippingQuote).mockReturnValue(null);
+
+    const result = getShippingInfo("Kalamazu");
+    expect(getShippingQuote).toHaveBeenCalledWith("Kalamazu");
+    expect(result).toMatch(/unavailable/i);
+  });
+
+  it("should return shipping info if a quote is fetched", () => {
+    vi.mocked(getShippingQuote).mockReturnValue({
+      cost: 100,
+      estimatedDays: 2,
+    });
+
+    const result = getShippingInfo("Kalamazu");
+    expect(getShippingQuote).toHaveBeenCalledWith("Kalamazu");
+    expect(result).toMatch(/shipping cost: \$100 \(2 days\)/i);
   });
 });

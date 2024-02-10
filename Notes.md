@@ -239,3 +239,7 @@ In the getPriceInCurrency function in mocking.js we call the imported getExchang
 # Interaction Testing
 
 Testing how the function under test interacts with another function. We've already done this but lets put a name to it. See test renderPage where we mock our simulated call to analytics (trackPageView); We run 2 tests here. 1 to make sure renderPage renders the correct content. 2 to make sure renderPage calls trackPageView with path parameter "/home"
+
+# Partial Mocking
+
+We don't always want to mock every function in the module but just the one we actually need to mock for a certain test case/suite. In email.js isValidEmail is just a utility function to tell if an email is valid or not. There is nothing random or dynamic about it so there is no reason to mock it. But in the same module sendEmail needs to be mocked because we don't want to actually send emails during testing of the function that calls it. See how we partially mock the email module.

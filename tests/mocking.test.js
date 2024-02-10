@@ -3,12 +3,14 @@ import {
   getPriceInCurrency,
   getShippingInfo,
   renderPage,
+  signUp,
   submitOrder,
 } from "../src/mocking";
 import { getExchangeRate } from "../src/libs/currency";
 import { getShippingQuote } from "../src/libs/shipping";
 import { trackPageView } from "../src/libs/analytics";
 import { charge } from "../src/libs/payment";
+import { sendEmail } from "../src/libs/email";
 
 // this will mock all exported functions from the currency module
 // this line is hoisted so it replaces the functions with the mocked
@@ -18,6 +20,18 @@ vi.mock("../src/libs/currency");
 vi.mock("../src/libs/shipping");
 vi.mock("../src/libs/analytics");
 vi.mock("../src/libs/payment");
+
+// partial mocking
+vi.mock("../src/libs/email", async (importOriginal) => {
+  const emailModule = await importOriginal();
+
+  return {
+    // original functions from email module
+    ...emailModule,
+    // override and mock only sendEmail
+    sendEmail: vi.fn(),
+  };
+});
 
 describe("greet", () => {
   it("should mock the greet function", async () => {
@@ -119,5 +133,43 @@ describe("submitOrder", () => {
     const result = await submitOrder(order, creditCard);
 
     expect(result).toEqual({ success: false, error: "payment_error" });
+  });
+});
+
+describe("signUp", () => {
+  const validEmail = "foo@foomail.com";
+  const invalidEmail = "foo";
+
+  it("should return false if email is not valid", async () => {
+    const result = await signUp(invalidEmail);
+
+    expect(result).toBe(false);
+  });
+
+  it("should return true if email is valid", async () => {
+    const result = await signUp(validEmail);
+
+    expect(result).toBe(true);
+  });
+
+  it("should send an email if email is valid v1", async () => {
+    const result = await signUp(validEmail);
+
+    expect(sendEmail).toHaveBeenCalledWith(
+      validEmail,
+      expect.stringMatching(/welcome/i)
+    );
+  });
+
+  // longer but sometimes useful way
+  // getting args from the mock
+  it("should send an email if email is valid v2", async () => {
+    const result = await signUp(validEmail);
+
+    expect(sendEmail).toHaveBeenCalled();
+
+    const args = vi.mocked(sendEmail).mock.calls[0];
+    expect(args[0]).toBe(validEmail);
+    expect(args[1]).toMatch(/welcome/i);
   });
 });

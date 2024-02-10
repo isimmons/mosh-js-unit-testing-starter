@@ -1,7 +1,12 @@
 import { it, expect, describe, vi } from "vitest";
-import { getPriceInCurrency, getShippingInfo } from "../src/mocking";
+import {
+  getPriceInCurrency,
+  getShippingInfo,
+  renderPage,
+} from "../src/mocking";
 import { getExchangeRate } from "../src/libs/currency";
 import { getShippingQuote } from "../src/libs/shipping";
+import { trackPageView } from "../src/libs/analytics";
 
 // this will mock all exported functions from the currency module
 // this line is hoisted so it replaces the functions with the mocked
@@ -9,6 +14,7 @@ import { getShippingQuote } from "../src/libs/shipping";
 // it is actually the mocked version being imported
 vi.mock("../src/libs/currency");
 vi.mock("../src/libs/shipping");
+vi.mock("../src/libs/analytics");
 
 describe("greet", () => {
   it("should mock the greet function", async () => {
@@ -69,5 +75,18 @@ describe("getShippingInfo", () => {
     const result = getShippingInfo("Kalamazu");
     expect(getShippingQuote).toHaveBeenCalledWith("Kalamazu");
     expect(result).toMatch(/shipping cost: \$100 \(2 days\)/i);
+  });
+});
+
+describe("renderPage", () => {
+  it("should return correct content", async () => {
+    const result = await renderPage();
+
+    expect(result).toMatch(/content/i);
+  });
+
+  it("should call analytics", async () => {
+    await renderPage();
+    expect(trackPageView).toHaveBeenCalledWith("/home");
   });
 });

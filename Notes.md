@@ -235,3 +235,7 @@ A mock function imitates the behavior of a real function. It is not a test of th
 ## Mock modules
 
 In the getPriceInCurrency function in mocking.js we call the imported getExchangeRate function. In the getExchangeRate function it returns Math.random(). The function we are testing is getPriceCurrency but we want our testing to be pure which means it cannot accept random values for input. So we will mock the getExchangeRate function so we can control it's return value.
+
+# Interaction Testing
+
+Testing how the function under test interacts with another function. We've already done this but lets put a name to it. See test renderPage where we mock our simulated call to analytics (trackPageView); We run 2 tests here. 1 to make sure renderPage renders the correct content. 2 to make sure renderPage calls trackPageView with path parameter "/home"

@@ -3,9 +3,11 @@ import {
   Stack,
   calculateDiscount,
   canDrive,
+  createProduct,
   fetchData,
   getCoupons,
   isPriceInRange,
+  isStrongPassword,
   isValidUsername,
   validateUserInput,
 } from "../src/core";
@@ -336,5 +338,63 @@ describe("stack", () => {
         expect(context.stack.size()).toBe(2);
       });
     });
+  });
+});
+
+describe("createProduct", () => {
+  it("should return error object if no product name", () => {
+    const product = { price: 1 };
+    const result = createProduct(product);
+
+    expect(result).toHaveProperty("success");
+    expect(result.success).toBe(false);
+    expect(result).toHaveProperty("error");
+    expect(result.error).toHaveProperty("code");
+    expect(result.error.code).toMatch(/invalid/i);
+    expect(result.error.message).toMatch(/missing/i);
+  });
+
+  it("should return error object if price <= 0", () => {
+    const product = { name: "foo", price: 0 };
+    const result = createProduct(product);
+
+    expect(result).toHaveProperty("success");
+    expect(result.success).toBe(false);
+    expect(result).toHaveProperty("error");
+    expect(result.error).toHaveProperty("code");
+    expect(result.error.code).toMatch(/invalid/i);
+    expect(result.error.message).toMatch(/missing/i);
+  });
+
+  it("should return success object if given valid product", () => {
+    const product = { name: "foo", price: 10 };
+    const result = createProduct(product);
+
+    expect(result).toHaveProperty("success");
+    expect(result.success).toBe(true);
+    expect(result).toHaveProperty("message");
+    expect(result.message).toMatch(/success/i);
+  });
+});
+
+describe("isStrongPassword", () => {
+  it("should return true if password is strong", () => {
+    expect(isStrongPassword("1Password")).toBe(true);
+  });
+
+  it("should return false if password is less than 8 characters", () => {
+    expect(isStrongPassword("1Pass")).toBe(false);
+  });
+
+  it("should return false if password does not contain at least 1 capital letter", () => {
+    expect(isStrongPassword("1password")).toBe(false);
+  });
+
+  it("should return false if password does not contain at least 1 lowercase letter", () => {
+    expect(isStrongPassword("1PASSWORD")).toBe(false);
+  });
+
+  it("should return false if password does not contain at least 1 digit", () => {
+    expect(isStrongPassword("Password")).toBe(false);
   });
 });

@@ -1,1 +1,1 @@
-npx vitest
+npx vitest run

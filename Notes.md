@@ -286,10 +286,10 @@ Tools that analyze source code without executing it.
 Catch potential errors/issues early in the dev process.
 Enforce coding standards and best practices.
 Improve code quality.
-Ensure consisten code quality across the dev team.
+Ensure consistent code quality across the dev team.
 
 ## Tools
 
 Prettier ( consistent formatting style )
-ESLint
+ESLint (code quality checker)
 TypeScript

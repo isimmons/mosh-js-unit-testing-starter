@@ -1,4 +1,4 @@
-import { it, expect, describe, vi, beforeEach } from 'vitest';
+import { it, expect, describe, vi } from 'vitest';
 import {
   getPriceInCurrency,
   getShippingInfo,
@@ -167,7 +167,7 @@ describe('signUp', () => {
   });
 
   it('should send an email if email is valid v1', async () => {
-    const result = await signUp(validEmail);
+    await signUp(validEmail);
 
     expect(sendEmail).toHaveBeenCalledWith(
       validEmail,
@@ -178,7 +178,7 @@ describe('signUp', () => {
   // longer but sometimes useful way
   // getting args from the mock
   it('should send an email if email is valid v2', async () => {
-    const result = await signUp(validEmail);
+    await signUp(validEmail);
 
     expect(sendEmail).toHaveBeenCalledOnce();
 

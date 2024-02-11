@@ -28,7 +28,7 @@ export function calculateDiscount(price, discountCode) {
 
 // Exercise: Positive and negative testing
 export function validateUserInput(username, age) {
-  let errors = [];
+  const errors = [];
 
   if (
     typeof username !== 'string' ||

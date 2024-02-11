@@ -1,1 +1,1 @@
-npx vitest run
+npm test

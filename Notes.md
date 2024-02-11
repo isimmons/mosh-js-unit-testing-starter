@@ -265,3 +265,7 @@ Clears the information and restores the original implimentation. If created with
 So, mostly we will use mockClear just to clear the number of mock calls for each test so other tests in our test suite will have a zero starting point.
 See beforeEach in signUp test
 Or better yet see where that is commented out and points to the new root file vitest.config.js where we configure vitest to automatically clearMocks before each test.
+
+# when to mock
+
+use mocks only for mocking external dependencies such as databases, api's, and services. This is speaking of mocks and spys in general as mocks since a spy is a type of partial mocking. We also don't want random data. This is similar to the way of thinking about vue/react components where things that are side effects and would make our component impure should use the useEffect but we don't want to litter our codebase with calls to useEffect if we don't have to. In mocking we don't want to mock everything just for the sake of mocking. If it needs to be mocked then mock but consider there could be issues with the implimentation and make sure you have thought it through before mocking.

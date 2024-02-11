@@ -101,16 +101,16 @@ A tight assertion can be a problem in the following example
 
 ```js
 it('should', () => {
-  const result = 'The requested file was not found.';
+  const result = 'The requested file was not found.'
   // too general
-  expect(result).toBeDefined();
+  expect(result).toBeDefined()
   // too tight
-  expect(result).toBe('The requested file was not found.');
+  expect(result).toBe('The requested file was not found.')
   // better
-  expect(result).toMatch('not found');
+  expect(result).toMatch('not found')
   // case insensitive regex may be even better
-  expect(result).toMatch(/not found/i);
-});
+  expect(result).toMatch(/not found/i)
+})
 ```
 
 If the period changes to an ! the test fails. But one could argue that copy text might not need to be open to the idividual devs on a team to make changes on a whim. Maybe for certain teams, very strict adherence to specific text is required. This brings up another issue on the production side though. If you want central control over the text of error messages, there should be defined constants like `const FILE_NOT_FOUND = "The requested file was not found."` These constants can be shared between the production and testing environments.
@@ -206,20 +206,20 @@ In the stack test I create a new instance of Stack before each test and use a co
 I could also have used a `let stack;` scoped to the whole test suite and set/delete it in the beforeEach/afterEach hooks. In hindsight, this would have been easier that having to type context.stack all those times.
 
 ```js
-let stack;
+let stack
 
 beforeEach(() => {
-  stack = new Stack();
-});
+  stack = new Stack()
+})
 
 afterEach(() => {
-  delete stack;
-});
+  delete stack
+})
 
 it('should be an instance of Stack', () => {
-  console.log(stack);
-  expect(stack instanceof Stack).toBe(true);
-});
+  console.log(stack)
+  expect(stack instanceof Stack).toBe(true)
+})
 ```
 
 Then in each test I use the built in array methods to do the work and test only the stack method under test. If I were to use stack.push and stack.clear directly in the test for stack.size or stack.isEmpty then this would couple my tests together. They would have to run in order to ensure the needed methods were available and working correctly. In the course Mosh uses untested stack methods in the setup for other methods. In some cases this may be nessessary and in a way provides extra testing on those methods but in the case of our stack, items is an array so built in array methods can be used. In other cases the way Mosh does it could potentially cause confusion on where the error actually is if there is an error. This is because vitest won't give me an error like "stack.foo is not a function" or other errors that might be thrown by stack.foo when I'm using stack.foo in the setup for testing stack.bar. vitest will just tell me stack.bar expected foo but recieved undefined or whatever.
@@ -294,3 +294,5 @@ Prettier ( consistent formatting style )
 ESLint (code quality checker)
 TypeScript
 Husky (git hooks automation)
+
+Not sure why I need husky at this point. None of the commands does anything that doesn't already happen when I hit ctrl+s and if I don't hit ctrl+s then there are no changes detected by git.

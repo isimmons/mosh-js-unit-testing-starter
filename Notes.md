@@ -247,3 +247,21 @@ We don't always want to mock every function in the module but just the one we ac
 # Spying
 
 To monitor the behavior of functions during test execution. We use the login function test to demonstrate spying on the security.generateCode function but I believe actually doing this is wrong. The spy gets the actual return value from actually calling the function but it is not the function under test and may or may not have been tested it's self yet. We can easily mock this function instead of spying on it and program the mock to return '123456' or whatever we want. That way the test of login does not depend on correct implimentation of the production code of generateCode. Plus there is the general rule of keeping our test pure by not introducing random/dynamic values. sendEmail and generateCode should both be mocked in this situation. As an aside, many mocking frameworks will suggest in the docs to prefer mocks over spys for pretty much this reason.
+
+# clearing, resetting, restoring mocks
+
+## mockClear
+
+Clears stored information about a mock calls
+
+## mockReset
+
+Clears the information and sets the mock to an empty function so programmed mock implimentations will be lost
+
+## mockRestore
+
+Clears the information and restores the original implimentation. If created with vi.fn this is an empty function but if created as spy.mockImplimentation(() => {... some code and a return }) then this is considered to be the original implimentation.
+
+So, mostly we will use mockClear just to clear the number of mock calls for each test so other tests in our test suite will have a zero starting point.
+See beforeEach in signUp test
+Or better yet see where that is commented out and points to the new root file vitest.config.js where we configure vitest to automatically clearMocks before each test.

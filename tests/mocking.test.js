@@ -1,4 +1,4 @@
-import { it, expect, describe, vi } from "vitest";
+import { it, expect, describe, vi, beforeEach } from "vitest";
 import {
   getPriceInCurrency,
   getShippingInfo,
@@ -139,6 +139,16 @@ describe("submitOrder", () => {
 });
 
 describe("signUp", () => {
+  // this requires us to remember to clear mocks
+  // see ./vitest.config.js where we config vitest
+  // to automatically clear all mocks before each test
+  // beforeEach(() => {
+  //   // clear individual
+  //   vi.mocked(sendEmail).mockClear();
+  //   // clear multiple mocked functions
+  //   vi.clearAllMocks();
+  // });
+
   const validEmail = "foo@foomail.com";
   const invalidEmail = "foo";
 
@@ -168,7 +178,7 @@ describe("signUp", () => {
   it("should send an email if email is valid v2", async () => {
     const result = await signUp(validEmail);
 
-    expect(sendEmail).toHaveBeenCalled();
+    expect(sendEmail).toHaveBeenCalledOnce();
 
     const args = vi.mocked(sendEmail).mock.calls[0];
     expect(args[0]).toBe(validEmail);

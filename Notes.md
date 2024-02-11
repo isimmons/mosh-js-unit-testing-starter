@@ -269,3 +269,10 @@ Or better yet see where that is commented out and points to the new root file vi
 # when to mock
 
 use mocks only for mocking external dependencies such as databases, api's, and services. This is speaking of mocks and spys in general as mocks since a spy is a type of partial mocking. We also don't want random data. This is similar to the way of thinking about vue/react components where things that are side effects and would make our component impure should use the useEffect but we don't want to litter our codebase with calls to useEffect if we don't have to. In mocking we don't want to mock everything just for the sake of mocking. If it needs to be mocked then mock but consider there could be issues with the implimentation and make sure you have thought it through before mocking.
+
+## back to trustworthy tests
+
+deterministic (allways passes or allways fails)
+not dependent on random data
+not dependent on current date/time (dynamic)
+not dependent on global state (could change)

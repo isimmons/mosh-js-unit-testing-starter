@@ -6,6 +6,7 @@ import {
   signUp,
   submitOrder,
   login,
+  isOnline,
 } from "../src/mocking";
 import { getExchangeRate } from "../src/libs/currency";
 import { getShippingQuote } from "../src/libs/shipping";
@@ -196,5 +197,27 @@ describe("login", () => {
 
     const securityCode = spy.mock.results[0].value.toString();
     expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
+  });
+});
+
+describe("isOnline", () => {
+  // potential candidate for parameterized test
+  // but not going to for now
+  it("should return false if current hour is outside opening hours", () => {
+    // 1 min before opening time 8
+    vi.setSystemTime("2024-01-01 07:59");
+    expect(isOnline()).toBe(false);
+
+    // 1 min after closing time 8PM or 20:00
+    vi.setSystemTime("2024-01-01 20:01");
+    expect(isOnline()).toBe(false);
+  });
+
+  it("should return true if current hour is within opening hours", () => {
+    vi.setSystemTime("2024-01-01 08:00");
+    expect(isOnline()).toBe(true);
+
+    vi.setSystemTime("2024-01-01 19:59");
+    expect(isOnline()).toBe(true);
   });
 });

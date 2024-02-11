@@ -1,6 +1,4 @@
 export function calculateDiscount(price: number, discountCode: string) {
-  const foo = 'foofoo';
-  console.log(foo);
   if (price <= 0) {
     return 'Invalid price';
   }

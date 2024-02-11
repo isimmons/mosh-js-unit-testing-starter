@@ -299,3 +299,5 @@ Not sure why I need husky at this point. None of the commands does anything that
 Ok if I add --fix to the lint command it will fix. But also had to set prettier not to add the semi colon so I could save the file without adding it before commit.
 
 I prefer to have config files handle this stuff on save and I don't feel good about having eslint fix issues across the entire project as part of a commit. Guess I need to play with it some more.
+
+Testing before push is good

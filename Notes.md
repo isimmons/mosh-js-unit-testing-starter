@@ -293,3 +293,4 @@ Ensure consistent code quality across the dev team.
 Prettier ( consistent formatting style )
 ESLint (code quality checker)
 TypeScript
+Husky (git hooks automation)

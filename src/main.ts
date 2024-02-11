@@ -1,8 +1,9 @@
 export function calculateDiscount(price: number, discountCode: string) {
-  console.log('foo');
   if (price <= 0) {
     return 'Invalid price';
   }
+
+  throw Error('fail test');
 
   let discount = 0;
   if (discountCode === 'SAVE10') {

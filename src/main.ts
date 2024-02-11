@@ -1,16 +1,16 @@
 export function calculateDiscount(price: number, discountCode: string) {
   if (price <= 0) {
-    return 'Invalid price';
+    return 'Invalid price'
   }
 
-  throw Error('fail test');
+  throw Error('fail test')
 
-  let discount = 0;
+  let discount = 0
   if (discountCode === 'SAVE10') {
-    discount = 0.1;
+    discount = 0.1
   } else if (discountCode === 'SAVE20') {
-    discount = 0.2;
+    discount = 0.2
   }
 
-  return price - price * discount;
+  return price - price * discount
 }

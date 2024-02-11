@@ -9,11 +9,13 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "format": "prettier . --write"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.2.2",
     "@vitest/ui": "^1.2.2",
+    "prettier": "^3.2.5",
     "vite": "^5.0.0",
     "vitest": "^1.2.2"
   },

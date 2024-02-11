@@ -100,14 +100,14 @@ A tight assertion can be a problem in the following example
 ## tight string assertion
 
 ```js
-it("should", () => {
-  const result = "The requested file was not found.";
+it('should', () => {
+  const result = 'The requested file was not found.';
   // too general
   expect(result).toBeDefined();
   // too tight
-  expect(result).toBe("The requested file was not found.");
+  expect(result).toBe('The requested file was not found.');
   // better
-  expect(result).toMatch("not found");
+  expect(result).toMatch('not found');
   // case insensitive regex may be even better
   expect(result).toMatch(/not found/i);
 });
@@ -216,7 +216,7 @@ afterEach(() => {
   delete stack;
 });
 
-it("should be an instance of Stack", () => {
+it('should be an instance of Stack', () => {
   console.log(stack);
   expect(stack instanceof Stack).toBe(true);
 });
@@ -276,3 +276,20 @@ deterministic (allways passes or allways fails)
 not dependent on random data
 not dependent on current date/time (dynamic)
 not dependent on global state (could change)
+
+# Static Analysis Tools
+
+Tools that analyze source code without executing it.
+
+## Benefits
+
+Catch potential errors/issues early in the dev process.
+Enforce coding standards and best practices.
+Improve code quality.
+Ensure consisten code quality across the dev team.
+
+## Tools
+
+Prettier ( consistent formatting style )
+ESLint
+TypeScript

@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import {
   Stack,
   calculateDiscount,
@@ -10,12 +10,12 @@ import {
   isStrongPassword,
   isValidUsername,
   validateUserInput,
-} from "../src/core";
+} from '../src/core';
 
 // array of objects
 // each object has code: string, discount: number <0 - 1>
-describe("getCoupons", () => {
-  it("should return an array of  coupons", () => {
+describe('getCoupons', () => {
+  it('should return an array of  coupons', () => {
     const res = getCoupons();
     // make sure it is an actual array
     expect(Array.isArray(res)).toBe(true);
@@ -26,17 +26,17 @@ describe("getCoupons", () => {
     // so need the run time check like below
     // probably improved by using typescript. See Notes
     res.forEach((coupon) => {
-      expect(!Array.isArray(coupon) && typeof coupon === "object").toBe(true);
+      expect(!Array.isArray(coupon) && typeof coupon === 'object').toBe(true);
     });
   });
 
-  describe("coupon object", () => {
+  describe('coupon object', () => {
     it("should have a 'code' property that is a string", () => {
       const res = getCoupons();
 
       res.forEach((coupon) => {
-        expect(coupon).toHaveProperty("code");
-        expect(typeof coupon.code).toBe("string");
+        expect(coupon).toHaveProperty('code');
+        expect(typeof coupon.code).toBe('string');
         expect(typeof coupon.code).toBeTruthy(); // no empty string
       });
     });
@@ -45,8 +45,8 @@ describe("getCoupons", () => {
       const res = getCoupons();
 
       res.forEach((coupon) => {
-        expect(coupon).toHaveProperty("discount");
-        expect(typeof coupon.discount).toBe("number");
+        expect(coupon).toHaveProperty('discount');
+        expect(typeof coupon.discount).toBe('number');
         // not chainable but does not error so watch out for false positive if trying to chain
         // these two
         expect(coupon.discount).toBeGreaterThanOrEqual(0);
@@ -57,60 +57,60 @@ describe("getCoupons", () => {
 });
 
 // Positive and negative testing
-describe("calculateDiscount", () => {
+describe('calculateDiscount', () => {
   // the positive happy path
-  it("should return discounted price if given a valid code", () => {
-    expect(calculateDiscount(10, "SAVE10")).toBe(9);
-    expect(calculateDiscount(10, "SAVE20")).toBe(8);
+  it('should return discounted price if given a valid code', () => {
+    expect(calculateDiscount(10, 'SAVE10')).toBe(9);
+    expect(calculateDiscount(10, 'SAVE20')).toBe(8);
   });
 
   // the negative sad paths
-  it("should handle non-numeric price", () => {
-    expect(calculateDiscount("10", "SAVE10")).toMatch(/invalid/i);
+  it('should handle non-numeric price', () => {
+    expect(calculateDiscount('10', 'SAVE10')).toMatch(/invalid/i);
   });
 
-  it("should handle a negative price", () => {
-    expect(calculateDiscount(-10, "SAVE10")).toMatch(/invalid/i);
+  it('should handle a negative price', () => {
+    expect(calculateDiscount(-10, 'SAVE10')).toMatch(/invalid/i);
   });
 
-  it("should handle a non-string discount code", () => {
+  it('should handle a non-string discount code', () => {
     expect(calculateDiscount(10, 0.1)).toMatch(/invalid/i);
   });
 
   // see notes on problem with code first approach here
-  it("should handle an invalid discount code", () => {
-    expect(calculateDiscount(10, "FOOBAR")).toBe(10);
+  it('should handle an invalid discount code', () => {
+    expect(calculateDiscount(10, 'FOOBAR')).toBe(10);
   });
 });
 
-describe("validateUserInput", () => {
-  it("should return success message if given valid input", () => {
-    expect(validateUserInput("Bob", 18)).toMatch(/success/i);
+describe('validateUserInput', () => {
+  it('should return success message if given valid input', () => {
+    expect(validateUserInput('Bob', 18)).toMatch(/success/i);
   });
 
-  it("should return invalid error, given a username < 3", () => {
-    expect(validateUserInput("Bo", 18)).toMatch(/invalid/i);
+  it('should return invalid error, given a username < 3', () => {
+    expect(validateUserInput('Bo', 18)).toMatch(/invalid/i);
   });
 
-  it("should return invalid error, given a username > 255", () => {
-    expect(validateUserInput("A".repeat(256), 18)).toMatch(/invalid/i);
+  it('should return invalid error, given a username > 255', () => {
+    expect(validateUserInput('A'.repeat(256), 18)).toMatch(/invalid/i);
   });
 
-  it("should return invalid error, if age is not a number", () => {
-    expect(validateUserInput("Bob", "foo")).toMatch(/invalid/i);
+  it('should return invalid error, if age is not a number', () => {
+    expect(validateUserInput('Bob', 'foo')).toMatch(/invalid/i);
   });
 
-  it("should return invalid error, given an age under 18", () => {
-    expect(validateUserInput("Bob", 17)).toMatch(/invalid/i);
+  it('should return invalid error, given an age under 18', () => {
+    expect(validateUserInput('Bob', 17)).toMatch(/invalid/i);
   });
 
-  it("should return invalid error, given an age over 105", () => {
-    expect(validateUserInput("Bob", 106)).toMatch(/invalid/i);
+  it('should return invalid error, given an age over 105', () => {
+    expect(validateUserInput('Bob', 106)).toMatch(/invalid/i);
   });
 
-  it("should return 2 invalid errors, given an age and username are invalid", () => {
-    expect(validateUserInput("", 0)).toMatch(/invalid username/i);
-    expect(validateUserInput("", 0)).toMatch(/invalid age/i);
+  it('should return 2 invalid errors, given an age and username are invalid', () => {
+    expect(validateUserInput('', 0)).toMatch(/invalid username/i);
+    expect(validateUserInput('', 0)).toMatch(/invalid age/i);
   });
 });
 
@@ -131,42 +131,42 @@ describe("validateUserInput", () => {
 // });
 
 // parameterized version
-describe("isPriceInRange", () => {
+describe('isPriceInRange', () => {
   const min = 5;
   const max = 10;
 
   it.each([
-    { scenario: "price < min", price: min - 1, result: false },
-    { scenario: "price = min", price: min, result: true },
-    { scenario: "price between min and max", price: min + 1, result: true },
-    { scenario: "price > max", price: max + 1, result: false },
-    { scenario: "price = max", price: max, result: true },
-  ])("should return $result when $scenario", ({ price, result }) => {
+    { scenario: 'price < min', price: min - 1, result: false },
+    { scenario: 'price = min', price: min, result: true },
+    { scenario: 'price between min and max', price: min + 1, result: true },
+    { scenario: 'price > max', price: max + 1, result: false },
+    { scenario: 'price = max', price: max, result: true },
+  ])('should return $result when $scenario', ({ price, result }) => {
     expect(isPriceInRange(price, min, max)).toBe(result);
   });
 });
 
-describe("isValidUsername", () => {
+describe('isValidUsername', () => {
   const minLength = 5;
   const maxLength = 15;
 
-  it("should return true if the username is 5 - 15 characters", () => {
-    expect(isValidUsername("J".repeat(minLength + 1))).toBe(true);
-    expect(isValidUsername("J".repeat(maxLength - 1))).toBe(true);
+  it('should return true if the username is 5 - 15 characters', () => {
+    expect(isValidUsername('J'.repeat(minLength + 1))).toBe(true);
+    expect(isValidUsername('J'.repeat(maxLength - 1))).toBe(true);
   });
 
-  it("should return true if the username is 5 or 15 characters", () => {
-    expect(isValidUsername("J".repeat(minLength))).toBe(true);
-    expect(isValidUsername("J".repeat(maxLength))).toBe(true);
+  it('should return true if the username is 5 or 15 characters', () => {
+    expect(isValidUsername('J'.repeat(minLength))).toBe(true);
+    expect(isValidUsername('J'.repeat(maxLength))).toBe(true);
   });
 
-  it("should return false if the username is less than 5 or more than 15 characters", () => {
-    expect(isValidUsername("J".repeat(minLength - 1))).toBe(false);
-    expect(isValidUsername("J".repeat(maxLength + 1))).toBe(false);
+  it('should return false if the username is less than 5 or more than 15 characters', () => {
+    expect(isValidUsername('J'.repeat(minLength - 1))).toBe(false);
+    expect(isValidUsername('J'.repeat(maxLength + 1))).toBe(false);
   });
 
-  it("should return false for invalid input type string", () => {
-    expect(isValidUsername("")).toBe(false);
+  it('should return false for invalid input type string', () => {
+    expect(isValidUsername('')).toBe(false);
     expect(isValidUsername(null)).toBe(false);
     expect(isValidUsername(undefined)).toBe(false);
     expect(isValidUsername(2)).toBe(false);
@@ -204,28 +204,28 @@ describe("isValidUsername", () => {
 // });
 
 // parameterized version
-describe("canDrive", () => {
+describe('canDrive', () => {
   const legalDrivingAge = {
     US: 16,
     UK: 17,
   };
 
-  it("should return an error, given an invalid country code", () => {
-    expect(canDrive(30, "RU")).toMatch(/invalid/i);
+  it('should return an error, given an invalid country code', () => {
+    expect(canDrive(30, 'RU')).toMatch(/invalid/i);
   });
 
   it.each([
-    { age: legalDrivingAge.US - 1, country: "US", result: false },
-    { age: legalDrivingAge.US, country: "US", result: true },
-    { age: legalDrivingAge.US + 1, country: "US", result: true },
-    { age: legalDrivingAge.UK - 1, country: "UK", result: false },
-    { age: legalDrivingAge.UK, country: "UK", result: true },
-    { age: legalDrivingAge.UK + 1, country: "UK", result: true },
+    { age: legalDrivingAge.US - 1, country: 'US', result: false },
+    { age: legalDrivingAge.US, country: 'US', result: true },
+    { age: legalDrivingAge.US + 1, country: 'US', result: true },
+    { age: legalDrivingAge.UK - 1, country: 'UK', result: false },
+    { age: legalDrivingAge.UK, country: 'UK', result: true },
+    { age: legalDrivingAge.UK + 1, country: 'UK', result: true },
   ])(
-    "should return $result for age: $age, country code: $country",
+    'should return $result for age: $age, country code: $country',
     ({ age, country, result }) => {
       expect(canDrive(age, country)).toBe(result);
-    }
+    },
   );
 });
 
@@ -245,21 +245,21 @@ describe("canDrive", () => {
 // });
 
 // async await version
-describe("fetchData", () => {
-  it("should return a promise that resolves to an array of numbers", async () => {
+describe('fetchData', () => {
+  it('should return a promise that resolves to an array of numbers', async () => {
     try {
       const result = await fetchData();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBeGreaterThan(0);
       expect(result).toEqual(expect.arrayContaining([1, 2, 3]));
     } catch (error) {
-      expect(error).toHaveProperty("reason");
+      expect(error).toHaveProperty('reason');
       expect(error.reason).toMatch(/fail/i);
     }
   });
 });
 
-describe("stack", () => {
+describe('stack', () => {
   beforeEach((context) => {
     context.stack = new Stack();
   });
@@ -268,133 +268,133 @@ describe("stack", () => {
     delete context.stack;
   });
 
-  it("should be an instance of Stack", (context) => {
+  it('should be an instance of Stack', (context) => {
     expect(context.stack instanceof Stack).toBe(true);
   });
 
-  it("should have an items array", (context) => {
+  it('should have an items array', (context) => {
     expect(Array.isArray(context.stack.items)).toBe(true);
   });
 
-  describe("stack methods", () => {
-    describe("push", () => {
-      it("should add an item to the stack", (context) => {
-        context.stack.push("foo");
+  describe('stack methods', () => {
+    describe('push', () => {
+      it('should add an item to the stack', (context) => {
+        context.stack.push('foo');
         expect(context.stack.items.length).toBe(1);
       });
     });
 
-    describe("pop", () => {
-      it("should remove and return the top item", (context) => {
-        context.stack.items.push("foo");
-        context.stack.items.push("bar");
+    describe('pop', () => {
+      it('should remove and return the top item', (context) => {
+        context.stack.items.push('foo');
+        context.stack.items.push('bar');
         const item = context.stack.pop();
-        expect(item).toBe("bar");
+        expect(item).toBe('bar');
         expect(context.stack.items.length).toBe(1);
       });
 
-      it("should throw an error if items is empty", (context) => {
+      it('should throw an error if items is empty', (context) => {
         expect(() => context.stack.pop()).toThrow(/empty/i);
       });
     });
 
-    describe("peek", () => {
-      it("should return the top item without removing it", (context) => {
-        context.stack.items.push("foo");
-        context.stack.items.push("bar");
+    describe('peek', () => {
+      it('should return the top item without removing it', (context) => {
+        context.stack.items.push('foo');
+        context.stack.items.push('bar');
         const item = context.stack.peek();
-        expect(item).toBe("bar");
-        expect(context.stack.items[1]).toBe("bar");
+        expect(item).toBe('bar');
+        expect(context.stack.items[1]).toBe('bar');
       });
 
-      it("should throw an error if items is empty", (context) => {
+      it('should throw an error if items is empty', (context) => {
         expect(() => context.stack.peek()).toThrow(/empty/i);
       });
     });
 
-    describe("clear", () => {
-      it("should clear the stack", (context) => {
-        context.stack.items.push("foo");
+    describe('clear', () => {
+      it('should clear the stack', (context) => {
+        context.stack.items.push('foo');
         context.stack.clear();
         expect(context.stack.items.length).toBe(0);
       });
     });
 
-    describe("isEmpty", () => {
-      it("should return true if stack is empty", (context) => {
+    describe('isEmpty', () => {
+      it('should return true if stack is empty', (context) => {
         expect(context.stack.isEmpty()).toBe(true);
       });
 
-      it("should return false if stack is not empty", (context) => {
-        context.stack.items.push("foo");
+      it('should return false if stack is not empty', (context) => {
+        context.stack.items.push('foo');
         expect(context.stack.isEmpty()).toBe(false);
       });
     });
 
-    describe("size", () => {
-      it("should return the number of items in the stack", (context) => {
-        context.stack.items.push("foo");
-        context.stack.items.push("bar");
+    describe('size', () => {
+      it('should return the number of items in the stack', (context) => {
+        context.stack.items.push('foo');
+        context.stack.items.push('bar');
         expect(context.stack.size()).toBe(2);
       });
     });
   });
 });
 
-describe("createProduct", () => {
-  it("should return error object if no product name", () => {
+describe('createProduct', () => {
+  it('should return error object if no product name', () => {
     const product = { price: 1 };
     const result = createProduct(product);
 
-    expect(result).toHaveProperty("success");
+    expect(result).toHaveProperty('success');
     expect(result.success).toBe(false);
-    expect(result).toHaveProperty("error");
-    expect(result.error).toHaveProperty("code");
+    expect(result).toHaveProperty('error');
+    expect(result.error).toHaveProperty('code');
     expect(result.error.code).toMatch(/invalid/i);
     expect(result.error.message).toMatch(/missing/i);
   });
 
-  it("should return error object if price <= 0", () => {
-    const product = { name: "foo", price: 0 };
+  it('should return error object if price <= 0', () => {
+    const product = { name: 'foo', price: 0 };
     const result = createProduct(product);
 
-    expect(result).toHaveProperty("success");
+    expect(result).toHaveProperty('success');
     expect(result.success).toBe(false);
-    expect(result).toHaveProperty("error");
-    expect(result.error).toHaveProperty("code");
+    expect(result).toHaveProperty('error');
+    expect(result.error).toHaveProperty('code');
     expect(result.error.code).toMatch(/invalid/i);
     expect(result.error.message).toMatch(/missing/i);
   });
 
-  it("should return success object if given valid product", () => {
-    const product = { name: "foo", price: 10 };
+  it('should return success object if given valid product', () => {
+    const product = { name: 'foo', price: 10 };
     const result = createProduct(product);
 
-    expect(result).toHaveProperty("success");
+    expect(result).toHaveProperty('success');
     expect(result.success).toBe(true);
-    expect(result).toHaveProperty("message");
+    expect(result).toHaveProperty('message');
     expect(result.message).toMatch(/success/i);
   });
 });
 
-describe("isStrongPassword", () => {
-  it("should return true if password is strong", () => {
-    expect(isStrongPassword("1Password")).toBe(true);
+describe('isStrongPassword', () => {
+  it('should return true if password is strong', () => {
+    expect(isStrongPassword('1Password')).toBe(true);
   });
 
-  it("should return false if password is less than 8 characters", () => {
-    expect(isStrongPassword("1Pass")).toBe(false);
+  it('should return false if password is less than 8 characters', () => {
+    expect(isStrongPassword('1Pass')).toBe(false);
   });
 
-  it("should return false if password does not contain at least 1 capital letter", () => {
-    expect(isStrongPassword("1password")).toBe(false);
+  it('should return false if password does not contain at least 1 capital letter', () => {
+    expect(isStrongPassword('1password')).toBe(false);
   });
 
-  it("should return false if password does not contain at least 1 lowercase letter", () => {
-    expect(isStrongPassword("1PASSWORD")).toBe(false);
+  it('should return false if password does not contain at least 1 lowercase letter', () => {
+    expect(isStrongPassword('1PASSWORD')).toBe(false);
   });
 
-  it("should return false if password does not contain at least 1 digit", () => {
-    expect(isStrongPassword("Password")).toBe(false);
+  it('should return false if password does not contain at least 1 digit', () => {
+    expect(isStrongPassword('Password')).toBe(false);
   });
 });

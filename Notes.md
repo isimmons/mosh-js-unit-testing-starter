@@ -243,3 +243,7 @@ Testing how the function under test interacts with another function. We've alrea
 # Partial Mocking
 
 We don't always want to mock every function in the module but just the one we actually need to mock for a certain test case/suite. In email.js isValidEmail is just a utility function to tell if an email is valid or not. There is nothing random or dynamic about it so there is no reason to mock it. But in the same module sendEmail needs to be mocked because we don't want to actually send emails during testing of the function that calls it. See how we partially mock the email module.
+
+# Spying
+
+To monitor the behavior of functions during test execution. We use the login function test to demonstrate spying on the security.generateCode function but I believe actually doing this is wrong. The spy gets the actual return value from actually calling the function but it is not the function under test and may or may not have been tested it's self yet. We can easily mock this function instead of spying on it and program the mock to return '123456' or whatever we want. That way the test of login does not depend on correct implimentation of the production code of generateCode. Plus there is the general rule of keeping our test pure by not introducing random/dynamic values. sendEmail and generateCode should both be mocked in this situation. As an aside, many mocking frameworks will suggest in the docs to prefer mocks over spys for pretty much this reason.
